@@ -5,7 +5,7 @@ on:
     branches: [ "master" ]
 
 jobs:
-  docker_aarch64:
+  docker:
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -22,34 +22,10 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and push (aarch64)
+      - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: .
-          platforms: linux/arm64
-          push: true
-          tags: ghcr.io/avoonix/jaeger-telegram-error-notifier:latest-aarch64
-  docker_amd64:
-    runs-on: ubuntu-latest
-    permissions:
-      packages: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and push (amd64)
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: ghcr.io/avoonix/jaeger-telegram-error-notifier:latest
