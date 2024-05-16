@@ -147,6 +147,7 @@ func createErrorMessage(span model.Span, log model.Log) string {
 	event := ""
 	target := ""
 	message := ""
+	timestamp := log.GetTimestamp().Format(time.DateTime)
 
 	for _, tag := range span.GetTags() {
 		if tag.GetKey() == "code.namespace" {
@@ -165,5 +166,5 @@ func createErrorMessage(span model.Span, log model.Log) string {
 		}
 	}
 
-	return fmt.Sprintf("Error occured!\n\nParent: %s (%s)\nTrace: %s\n\nTarget: %s\n\n%s\n%s", operation, namespace, traceId, target, event, message)
+	return fmt.Sprintf("Error occured at %s UTC!\n\nParent: %s (%s)\nTrace: %s\n\nTarget: %s\n\n%s\n%s", timestamp, operation, namespace, traceId, target, event, message)
 }
